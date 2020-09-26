@@ -36,14 +36,3 @@ for tag in soup.find_all('div', attrs={'class': 'movie-item film-channel'}, limi
         df.to_csv('movie.csv', mode='a', index=False, header=['name', 'types', 'date'], encoding='utf-8')
     else:
         df.to_csv('movie.csv', mode='a', index=False, header=False, encoding='utf-8')
-
-# names, types, dates = [], [], []
-# for tag in soup.find_all('div', attrs={'class': 'movie-item film-channel'}, limit=10):
-#     url = 'https://maoyan.com' + tag.a.get('href')
-#     file_name, file_types, file_date = get_data(url)
-#     names.append(file_name)
-#     types.append(file_types)
-#     dates.append(file_date)
-#
-# df = pd.DataFrame([names, types, dates], columns=['name', 'type', 'date'])
-# print(df)
