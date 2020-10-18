@@ -31,7 +31,7 @@
 **并行**概念是**并发**概念的一个子集，并行比并发要求更苛刻一些：
 并发：支持两个或者多个动作（Action）同时**存在**，但执行不一定同时进行。
 并行：支持两个或者多个动作**同时执行**。
-![0.25457688706897985.png](NOTE_files/0.25457688706897985.png)
+![first.png](NOTE_files/first.png)
 #### 进程 Vs. 线程
 进程是执行在 cpu 上的，一个 cpu 核心只能执行一个进程。
 而进程可以包含多个线程。
@@ -42,7 +42,7 @@
 多线程在 Python 里面实际上是**伪多线程**，并非真正意义上的并行操作。
 
 而多进程会涉及到多核调度，适用于**计算**等操作。
-![v2-63a65cbe6d5a4222a1326f2310ef48ee_r%20(1).jpg](file:///C:/Users/zff/Documents/My%20Knowledge/temp/e1038e45-2981-42af-b74c-9c6e34cc63c9/128/index_files/v2-63a65cbe6d5a4222a1326f2310ef48ee_r%20(1).jpg)
+![second.jpg](NOTE_files/second.jpg)
 
 
 ***
