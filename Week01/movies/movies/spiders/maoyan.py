@@ -3,10 +3,11 @@ from scrapy.selector import Selector
 from movies.items import MoviesItem
 from lxml import etree
 
+
 class MaoyanSpider(scrapy.Spider):
     name = 'maoyan'
     allowed_domains = ['maoyan.com']
-    start_urls = ['http://maoyan.com/']
+    # start_urls = ['http://maoyan.com/']  # 重写 start_requests 方法后，该句可不用
 
     def start_requests(self):
         url = 'https://maoyan.com/films?showType=3'
@@ -68,7 +69,6 @@ class MaoyanSpider(scrapy.Spider):
         # print(links)
         for i in range(10):
             link = 'https://maoyan.com' + movies[i].get()
-            # print(link)
             yield scrapy.Request(url=link, callback=self.parse2)
 
     def parse2(self, response):

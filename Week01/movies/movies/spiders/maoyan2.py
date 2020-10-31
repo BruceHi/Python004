@@ -25,4 +25,4 @@ class MaoyanSpider(scrapy.Spider):
             item['file_name'] = file_name
             item['file_types'] = file_types
             item['file_date'] = file_date
-            yield item
+            yield item  # 一条一条数据返回，否则，结果就只有最后一条数据
