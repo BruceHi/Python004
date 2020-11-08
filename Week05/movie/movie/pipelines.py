@@ -8,6 +8,7 @@
 from itemadapter import ItemAdapter
 import pymysql
 
+
 class MoviePipeline:
     def open_spider(self, spider):
         self.conn = pymysql.connect(host='localhost', user='root', password='123456',
