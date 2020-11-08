@@ -26,6 +26,7 @@
 ```
 #### 3. 初始设置
 到 setting.py 里进行一些常用的设置：
+
 1.增加应用。43 行左右，在列表尾部增加应用名：
 ```py
 INSTALLED_APPS = [
@@ -59,7 +60,6 @@ DATABASES = {
 3.修改时区。
 更改两个位置：
 ```py
-```
 TIME_ZONE = 'Asia/Shanghai'
 USE_TZ = False
 ```
