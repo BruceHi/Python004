@@ -1,8 +1,6 @@
 import scrapy
 from scrapy.selector import Selector
 from movie.items import MovieItem
-from selenium import webdriver
-import time
 
 
 class DoubanSpider(scrapy.Spider):
