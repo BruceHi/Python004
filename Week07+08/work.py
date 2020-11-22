@@ -28,10 +28,7 @@ class Animal(metaclass=ABCMeta):
 
     @abstractmethod
     def pre_process(self, name, species, body_type, character):
-        is_fierce = False
-        if body_type[0] in ['中', '大'] and species == '食肉' and character == '凶猛':
-            is_fierce = True
-        return is_fierce
+        return body_type[0] in ['中', '大'] and species == '食肉' and character == '凶猛'
 
 
 class Cat(Animal):
