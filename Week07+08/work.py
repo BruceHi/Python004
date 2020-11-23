@@ -28,7 +28,7 @@ class Animal(metaclass=ABCMeta):
     is_fierce = None
 
     @abstractmethod
-    def pre_process(self, name, species, body_type, character):
+    def pre_process(self, species, body_type, character):
         return body_type[0] in ['中', '大'] and species == '食肉' and character == '凶猛'
 
 
@@ -36,11 +36,11 @@ class Cat(Animal):
 
     sound = '喵'
 
-    def pre_process(self, name, species, body_type, character):
-        return super().pre_process(name, species, body_type, character)
+    def pre_process(self, species, body_type, character):
+        return super().pre_process(species, body_type, character)
 
     def __init__(self, name, species, body_type, character):
-        self.is_pet = not self.pre_process(name, species, body_type, character)
+        self.is_pet = not self.pre_process(species, body_type, character)
         self.name = name
 
 
@@ -48,11 +48,11 @@ class Dog(Animal):
 
     sound = '汪'
 
-    def pre_process(self, name, species, body_type, character):
-        return super().pre_process(name, species, body_type, character)
+    def pre_process(self, species, body_type, character):
+        return super().pre_process(species, body_type, character)
 
     def __init__(self, name, species, body_type, character):
-        self.is_pet = not self.pre_process(name, species, body_type, character)
+        self.is_pet = not self.pre_process(species, body_type, character)
         self.name = name
 
 
