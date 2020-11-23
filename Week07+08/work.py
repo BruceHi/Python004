@@ -7,11 +7,10 @@ class Zoo:
         self.name = name
 
     def add_animal(self, obj):
-
-        if obj.__class__.__name__ not in self.__dict__:
-            species = obj.__class__.__name__
-            name = obj.name
-            setattr(self, species, name)
+        species = type(obj).__name__
+        if not hasattr(self, species):
+            setattr(self, species, [])
+        getattr(self, species).append(id(obj))
 
             # 下面结果：'species': 'Cat'
             # self.species = species
