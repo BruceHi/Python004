@@ -10,10 +10,12 @@ class Zoo:
         species = type(obj).__name__
         if not hasattr(self, species):
             setattr(self, species, [])
-        getattr(self, species).append(id(obj))
-
-            # 下面结果：'species': 'Cat'
-            # self.species = species
+        if id(obj) not in getattr(self, species):
+            getattr(self, species).append(id(obj))
+        else:
+            raise Exception('不允许添加同一实例！')
+        # 下面结果：'species': 'Cat'
+        # self.species = species
 
 
 # 不允许被实例化，所以只有类属性
@@ -84,3 +86,6 @@ if __name__ == '__main__':
 
     z.add_animal(dog)
     print(z.__dict__)
+
+    # 抛出自定义异常
+    # z.add_animal(cat2)
