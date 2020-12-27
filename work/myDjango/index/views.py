@@ -8,24 +8,12 @@ import json
 import datetime
 # Create your views here.
 
-
-def index(request):
-    return HttpResponse('hello, django!')
-
-
-def show(request):
-    shorts = Table1.objects.all()
-
-    if 'q' in request.GET:
-        shorts = shorts.filter(short__contains=request.GET['q'])
-
-    return render(request, 'index.html', locals())
+# 取出全部数据
+shorts = Table1.objects.all()
 
 
-def bar(request):
-    shorts = Table1.objects.all()
-    storage_time = shorts[0].storage_time
-
+# 返回可供 Js 使用的字典类型
+def get_rates():
     rates = defaultdict(list)
 
     # 构造正则，将太长的标题给剪断
@@ -47,22 +35,19 @@ def bar(request):
         rates['good'].append(good)
         rates['normal'].append(normal)
         rates['bad'].append(bad)
-
-    # 传递到 js 使用，参数必须要 json 化
-    return render(request, 'barchart.html',
-                  {"rates": json.dumps(rates), 'storage_time': storage_time})
+    return rates
 
 
-def pie(request):
-    shorts = Table1.objects.all()
-    counts = shorts.values('phone_name').annotate(s=Count('phone_name'))
+# 返回 List[dict]
+def get_counts():
+    amount = shorts.values('phone_name').annotate(s=Count('phone_name'))
 
-    res = []
+    counts = []
 
     p = r'.*(?= [45]?[G ]?智能)'
     pattern = re.compile(p)
 
-    for count in counts:
+    for count in amount:
         phone_name = count['phone_name']
         phone_count = count['s']
 
@@ -71,11 +56,50 @@ def pie(request):
             phone_name = cut.group()
 
         # 构建符合特定 javasript 格式的 json 数据
-        res.append({
+        counts.append({
             'name': phone_name,
             'y': phone_count
         })
-        res[0]['sliced'] = True
-        res[0]['selected'] = True
+        counts[0]['sliced'] = True
+        counts[0]['selected'] = True
+    return counts
 
-    return render(request, 'piechart.html', {"res": json.dumps(res)})
+
+def index(request):
+    return HttpResponse('hello, django!')
+
+
+def show2(request):
+    shorts = Table1.objects.all()
+    if 'q' in request.GET:
+        shorts = shorts.filter(short__contains=request.GET['q'])
+    return render(request, 'index2.html', locals())
+
+
+def bar(request):
+    rates = get_rates()
+    # 传递到 js 使用，参数必须要 json 化
+    return render(request, 'barchart.html',
+                  {"rates": json.dumps(rates)})
+
+
+def pie(request):
+    counts = get_counts()
+    return render(request, 'piechart.html', {"counts": json.dumps(counts)})
+
+
+def tables(request):
+    return render(request, 'tables.html', {'shorts': shorts})
+
+
+def charts(request):
+    rates = get_rates()
+    counts = get_counts()
+    return render(request, 'charts.html', {"counts": json.dumps(counts), "rates": json.dumps(rates)})
+
+
+def show(request):
+    rates = get_rates()
+    counts = get_counts()
+    return render(request, 'index.html',
+                  {"counts": json.dumps(counts), "rates": json.dumps(rates), 'shorts': shorts})

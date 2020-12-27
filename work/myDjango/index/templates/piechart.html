@@ -14,7 +14,7 @@
         <div id="container" style="min-width:400px;height:400px"></div>
         <script>
             // JS 代码
-            var counts = {{ res | safe }}
+            var counts = {{ counts | safe }}
 
             Highcharts.chart('container', {
                 chart: {

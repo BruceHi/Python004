@@ -33,7 +33,7 @@ class PhoneSpider(scrapy.Spider):
 
         for i in range(1, pages+1):
             link = response.url + 'p' + str(i)
-            # 重复的请求不过滤
+            # 重复的请求不过滤 dont_filter=True
             yield scrapy.Request(url=link, meta={'item': deepcopy(item)},
                                  callback=self.parse3, dont_filter=True)
 
