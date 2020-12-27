@@ -15,9 +15,8 @@ class PhoneSpider(scrapy.Spider):
         contents = Selector(response).xpath('//*[@id="feed-main-list"]/li[@class="feed-row-wide"]')
         for content in contents[:10]:
 
-            phone_name = content.xpath('div/div[2]/h5/a/text()').get()
+            phone_name = content.xpath('div/div[2]/h5/a/text()').get().strip()
             item['phone_name'] = phone_name.split(': ')[-1]
-            # print(phone_name)
 
             link = content.xpath('div/div[2]/h5/a/@href').get()
             # 深拷贝，不然总是显示最后一个
@@ -35,7 +34,8 @@ class PhoneSpider(scrapy.Spider):
         for i in range(1, pages+1):
             link = response.url + 'p' + str(i)
             # 重复的请求不过滤
-            yield scrapy.Request(url=link, meta={'item': deepcopy(item)}, callback=self.parse3, dont_filter=True)
+            yield scrapy.Request(url=link, meta={'item': deepcopy(item)},
+                                 callback=self.parse3, dont_filter=True)
 
     # 提取评论
     def parse3(self, response):

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"><link rel="icon" href="https://jscdn.com.cn/highcharts/images/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /* css 代码  */
+        </style>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    </head>
+    <body>
+        <div>{{ storage_time | date:"Y-m-d H:i:s"}}</div>
+        <div id="container" style="min-width:400px;height:400px"></div>
+
+        <script>
+            // JS 代码
+            var rates = {{ rates|safe }};
+            // var time = {{ storage_time }};
+            var chart = Highcharts.chart('container',{
+                // 第一字段，去掉版权信息
+                credits: {
+			        enabled: false
+		        },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '手机评价分布'
+                },
+                subtitle: {
+                    text: '数据来源: SMZDM.com'
+                },
+                xAxis: {
+                    categories: rates.phone_name,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '评价数量'
+                    }
+                },
+                tooltip: {
+                    // head + 每个 point + footer 拼接成完整的 table
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        // stacking: 'percent'
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: '差评',
+                    data: rates.bad
+                }, {
+                    name: '中评',
+                    data: rates.normal
+                }, {
+                    name: '好评',
+                    data: rates.good
+                }]
+            });
+        </script>
+    </body>
+</html>
