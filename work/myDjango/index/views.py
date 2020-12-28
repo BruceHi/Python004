@@ -12,24 +12,26 @@ import datetime
 shorts = Table1.objects.all()
 
 
+# 构造正则，将太长的标题给剪断
+def split(name):
+    p = r'.*(?= [45]?[G ]?智能)'
+    pattern = re.compile(p)
+    cut = pattern.search(name)
+    if cut:
+        return cut.group()
+    return name
+
+
 # 返回可供 Js 使用的字典类型
 def get_rates():
     rates = defaultdict(list)
-
-    # 构造正则，将太长的标题给剪断
-    p = r'.*(?= [45]?[G ]?智能)'
-    pattern = re.compile(p)
 
     for phone_name, in shorts.values_list('phone_name').distinct():  # 解包
         phone = shorts.filter(phone_name=phone_name)
         good = phone.filter(sentiment__gt=0.75).count()
         normal = phone.filter(sentiment__range=[0.5, 0.75]).count()
         bad = phone.filter(sentiment__lt=0.5).count()
-
-        # 含有：4G智能，5G智能，智能等字段前面是手机名字
-        cut = pattern.search(phone_name)
-        if cut:
-            phone_name = cut.group()
+        phone_name = split(phone_name)
 
         rates['phone_name'].append(phone_name)
         rates['good'].append(good)
@@ -41,19 +43,12 @@ def get_rates():
 # 返回 List[dict]
 def get_counts():
     amount = shorts.values('phone_name').annotate(s=Count('phone_name'))
-
     counts = []
-
-    p = r'.*(?= [45]?[G ]?智能)'
-    pattern = re.compile(p)
 
     for count in amount:
         phone_name = count['phone_name']
         phone_count = count['s']
-
-        cut = pattern.search(phone_name)
-        if cut:
-            phone_name = cut.group()
+        phone_name = split(phone_name)
 
         # 构建符合特定 javasript 格式的 json 数据
         counts.append({
@@ -62,6 +57,7 @@ def get_counts():
         })
         counts[0]['sliced'] = True
         counts[0]['selected'] = True
+
     return counts
 
 
